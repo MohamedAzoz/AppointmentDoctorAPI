@@ -47,7 +47,7 @@ namespace AppointmentDoctorAPI.Controllers
                     await userManager.CreateAsync(user, doctorDTO.Password);
                 if (result.Succeeded)
                 {
-                    dent.UserId = (await userManager.FindByEmailAsync(user.Email)).Id;
+                    dent.UserId = (await userManager.FindByEmailAsync(user.Email))!.Id;
                     dentist.Add(dent);
                     dentist.Save();
                     await userManager.AddToRoleAsync(user, "Doctor");
@@ -76,7 +76,7 @@ namespace AppointmentDoctorAPI.Controllers
                     await userManager.CreateAsync(user, patientDTO.Password);
                 if (result.Succeeded)
                 {
-                    patient1.UserId = (await userManager.FindByEmailAsync(user.Email)).Id;
+                    patient1.UserId = (await userManager.FindByEmailAsync(user.Email))!.Id;
                     patient.Add(patient1);
                     patient.Save();
 
@@ -106,7 +106,7 @@ namespace AppointmentDoctorAPI.Controllers
                         List<Claim> claims = new List<Claim>();
                         claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
                         claims.Add(new Claim(ClaimTypes.NameIdentifier, appUser.Id));
-                        claims.Add(new Claim(ClaimTypes.Name, appUser.UserName));
+                        claims.Add(new Claim(ClaimTypes.Name, appUser.UserName!));
 
                         //===> Search to How Add Role in Web API
 
@@ -117,7 +117,7 @@ namespace AppointmentDoctorAPI.Controllers
                         }
 
                         SymmetricSecurityKey key =
-                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SecritKey"]));
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SecritKey"]!));
 
                         SigningCredentials signingCred =
                             new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
